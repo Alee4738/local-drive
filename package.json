@@ -1,0 +1,14 @@
+{
+  "name": "local-drive",
+  "version": "1.0.0",
+  "description": "Upload and download files over a local wifi network. Use HTTP so that clients can access it with a web browser.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
