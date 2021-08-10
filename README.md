@@ -8,10 +8,12 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Set up frontend and backend folder structure
 - Hello world frontend
 - Hello world backend
-
-## Todo
 - Can serve main.js, runtime.js, etc.
 
+## Todo
+- frontend lists files available
+- frontend can download files
+- frontend can upload files
 
 
 
