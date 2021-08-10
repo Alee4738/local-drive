@@ -11,9 +11,9 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Can serve main.js, runtime.js, etc.
 - frontend can list files
 - frontend can download files
+- backend can return list of files
 
 ## Todo
-- backend can return list of files
 - frontend can upload files
 
 
