@@ -1,5 +1,6 @@
 /node_modules
 /wwwroot
+/files
 
 # static site is a separate project
 static/**

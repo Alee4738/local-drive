@@ -10,9 +10,8 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Hello world backend
 
 ## Todo
-- Set up deployment script
-  - Deploy frontend
-  - Deploy backend
+- Can serve main.js, runtime.js, etc.
+
 
 
 
@@ -39,3 +38,13 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Server runs node/express
 - GET /path/to/file returns the file
 - PUT /path/to/file uploads the file
+
+# How to Run
+```bash
+# In a terminal, run frontend
+cd frontend
+ng build --watch
+
+# In a separate terminal, Run backend
+node index.js
+```
