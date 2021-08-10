@@ -10,10 +10,10 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Hello world backend
 - Can serve main.js, runtime.js, etc.
 - frontend can list files
+- frontend can download files
 
 ## Todo
 - backend can return list of files
-- frontend can download files
 - frontend can upload files
 
 

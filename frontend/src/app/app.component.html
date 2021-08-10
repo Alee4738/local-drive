@@ -1,4 +1,6 @@
 hello world
 <ul>
-  <li *ngFor="let file of files">{{file}}</li>
+  <li *ngFor="let file of files">
+    <a href="/file/{{file}}" [download]="file">{{file}}</a>
+  </li>
 </ul>

@@ -10,9 +10,9 @@ export class AppComponent implements OnInit {
   files: string[] = [];
 
   constructor(public http: HttpClient) {}
+
   ngOnInit() {
     this.http.get('/file').subscribe((val: Object) => {
-      console.log(val);
       this.files = val as string[];
     });
   }

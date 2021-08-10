@@ -3,18 +3,21 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+const filePath = './files';
+const fileVirtualPath = '/file';
+
 const frontendPath = path.resolve(__dirname, 'wwwroot');
 const frontendVirtualPath = '/';
 
-app.get('/file', (req, res) => {
+app.get(fileVirtualPath, (req, res) => {
   console.log(req.url);
-  res.send(['file1.txt', 'file2.txt', 'file4.txt']);
+  res.send(['hello.txt', 'file1.txt', 'file2.txt', 'file4.txt']);
 });
 
-app.get('/file/:name', (req, res) => {
+app.get(`${fileVirtualPath}/:name`, (req, res) => {
   console.log(req.url);
-
-  res.send(`Hello world ${req.params.name}`);
+  const actualFilePath = path.resolve(filePath, req.params.name);
+  res.sendFile(actualFilePath);
 });
 
 app.use(frontendVirtualPath, express.static(frontendPath));
