@@ -5,6 +5,10 @@
 
 <ul>
   <li *ngFor="let file of displayFiles">
-    <a href="/file/{{ file }}" [download]="file" [name]="file">{{ file }}</a>
+    <label [for]="file">
+      <a [href]="fileApiSegment + '/' + file" [download]="file" [name]="file">{{
+        file
+      }}</a>
+    </label>
   </li>
 </ul>

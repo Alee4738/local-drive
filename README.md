@@ -3,13 +3,16 @@ Local Drive
 Upload and download files over a local wifi network. Use HTTP so that clients can access it with a web browser.
 
 # Usage
+
+```bash
+./start.bash
+```
+
+## For Development
 ```bash
 # In a terminal, run frontend
 cd frontend
-# If you're modifying files
 ng build --watch
-# If you're not modifying files
-ng build
 
 # In a separate terminal, run backend
 node index.js
@@ -27,9 +30,10 @@ node index.js
 - backend can return list of files
 - frontend can upload new files
 - backend can upload new files
+- DuckDuckGo browser app messes up HTML download attribute, saves /files/hello.txt as files.txt and /images/myimage.png as images.png
+  - probably off-by-1 error: uses the directory name instead of the basename
 
 ## Todo
-
 
 
 # Features
