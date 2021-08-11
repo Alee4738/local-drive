@@ -2,11 +2,21 @@ Local Drive
 ---
 Upload and download files over a local wifi network. Use HTTP so that clients can access it with a web browser.
 
+<img src="demo.png" alt="Demo" width="500"/>
+
 # Usage
 
+1. Download this repository
+1. Run the script
 ```bash
 ./start.bash
+# Example Output
+Local Drive listening at http://192.168.123.456:3000
 ```
+1. On a device using the same wifi network (e.g. your phone), open a web browser and go to the URL above
+1. Upload and download files as needed
+1. Turn off the server with Ctrl+C
+
 
 ## For Development
 ```bash
@@ -50,15 +60,3 @@ node index.js
 
 # Prerequisites
 - Client and Server are on same wifi network
-
-# Implementation Proposal
-
-## Angular Frontend
-- Lists the files in the folder
-- When you click a file, you download it
-- There is a button that allows you to upload files to the folder
-
-## Express Backend
-- Server runs node/express
-- GET /path/to/file returns the file
-- PUT /path/to/file uploads the file
