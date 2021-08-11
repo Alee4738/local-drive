@@ -2,6 +2,19 @@ Local Drive
 ---
 Upload and download files over a local wifi network. Use HTTP so that clients can access it with a web browser.
 
+# Usage
+```bash
+# In a terminal, run frontend
+cd frontend
+# If you're modifying files
+ng build --watch
+# If you're not modifying files
+ng build
+
+# In a separate terminal, run backend
+node index.js
+```
+
 # Roadmap
 
 ## Done
@@ -12,9 +25,10 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - frontend can list files
 - frontend can download files
 - backend can return list of files
+- frontend can upload new files
+- backend can upload new files
 
 ## Todo
-- frontend can upload files
 
 
 
@@ -26,6 +40,9 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 
 # Limitations
 - No nested folders allowed
+- Can't delete files
+- Can't rename files
+- Can't search for files easily (but you can use Ctrl+F)
 
 # Prerequisites
 - Client and Server are on same wifi network
@@ -41,13 +58,3 @@ Upload and download files over a local wifi network. Use HTTP so that clients ca
 - Server runs node/express
 - GET /path/to/file returns the file
 - PUT /path/to/file uploads the file
-
-# How to Run
-```bash
-# In a terminal, run frontend
-cd frontend
-ng build --watch
-
-# In a separate terminal, Run backend
-node index.js
-```

@@ -1,10 +1,11 @@
 const express = require('express');
+const { networkInterfaces } = require('os');
 const path = require('path');
 const fs = require('fs/promises');
 const app = express();
 const port = 3000;
 
-const filePath = './files';
+const localDrivePath = './files';
 const fileVirtualPath = '/file';
 
 const frontendPath = path.resolve(__dirname, 'wwwroot');
@@ -22,21 +23,64 @@ function compareStringsCaseInsensitive(first, second) {
   }
 }
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+app.use(
+  express.raw({
+    type: 'text/plain',
+    limit: '50mb',
+  })
+);
+
 app.get(fileVirtualPath, async (req, res) => {
-  console.log(req.url);
-  const files = await fs.readdir(filePath);
+  const files = await fs.readdir(localDrivePath);
   files.sort(compareStringsCaseInsensitive);
   res.send(files);
 });
 
 app.get(`${fileVirtualPath}/:name`, (req, res) => {
-  console.log(req.url);
-  const actualFilePath = path.resolve(filePath, req.params.name);
+  const actualFilePath = path.resolve(localDrivePath, req.params.name);
   res.sendFile(actualFilePath);
+});
+
+app.put(`${fileVirtualPath}/:name`, async (req, res) => {
+  const fileName = path.normalize(`/${req.params.name}`);
+  const filePath = path.normalize(path.join(localDrivePath, fileName));
+  try {
+    await fs.writeFile(filePath, req.body);
+    res.end();
+  } catch (err) {
+    console.error(err);
+    res.send(400);
+  }
 });
 
 app.use(frontendVirtualPath, express.static(frontendPath));
 
+function getNetworkInterfaces() {
+  const nets = networkInterfaces();
+  const results = Object.create(null); // Or just '{}', an empty object
+
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+      if (net.family === 'IPv4' && !net.internal) {
+        if (!results[name]) {
+          results[name] = [];
+        }
+        results[name].push(net.address);
+      }
+    }
+  }
+  return results;
+}
+
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  const interfaces = getNetworkInterfaces();
+  for (const interfaceName in interfaces) {
+    const ip = interfaces[interfaceName];
+    console.log(`Local Drive listening at http://${ip}:${port}`);
+  }
 });
