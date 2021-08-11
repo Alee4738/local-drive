@@ -1,12 +1,13 @@
 const express = require('express');
 const { networkInterfaces } = require('os');
 const path = require('path');
-const fs = require('fs/promises');
+const { access, readdir, writeFile, mkdir } = require('fs/promises');
+const { constants } = require('fs');
 const app = express();
 const port = 3000;
 
-const localDrivePath = './files';
-const fileVirtualPath = '/file';
+const localDrivePath = path.resolve(__dirname, 'files');
+const localDriveVirtualPath = '/file';
 
 const frontendPath = path.resolve(__dirname, 'wwwroot');
 const frontendVirtualPath = '/';
@@ -23,6 +24,23 @@ function compareStringsCaseInsensitive(first, second) {
   }
 }
 
+async function createDriveFolderIfNotExists() {
+  try {
+    await access(localDrivePath, constants.R_OK | constants.W_OK);
+    console.log('Can access folder', localDrivePath);
+  } catch (err) {
+    const pathDoesNotExist = err.code === 'ENOENT';
+    if (pathDoesNotExist) {
+      console.log('Creating folder', localDrivePath);
+      await mkdir(localDrivePath);
+    } else {
+      throw err;
+    }
+  }
+}
+
+createDriveFolderIfNotExists();
+
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
@@ -34,22 +52,22 @@ app.use(
   })
 );
 
-app.get(fileVirtualPath, async (req, res) => {
-  const files = await fs.readdir(localDrivePath);
+app.get(localDriveVirtualPath, async (req, res) => {
+  const files = await readdir(localDrivePath);
   files.sort(compareStringsCaseInsensitive);
   res.send(files);
 });
 
-app.get(`${fileVirtualPath}/:name`, (req, res) => {
+app.get(`${localDriveVirtualPath}/:name`, (req, res) => {
   const actualFilePath = path.resolve(localDrivePath, req.params.name);
   res.sendFile(actualFilePath);
 });
 
-app.put(`${fileVirtualPath}/:name`, async (req, res) => {
+app.put(`${localDriveVirtualPath}/:name`, async (req, res) => {
   const fileName = path.normalize(`/${req.params.name}`);
   const filePath = path.normalize(path.join(localDrivePath, fileName));
   try {
-    await fs.writeFile(filePath, req.body);
+    await writeFile(filePath, req.body);
     res.end();
   } catch (err) {
     console.error(err);
