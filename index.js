@@ -27,7 +27,6 @@ function compareStringsCaseInsensitive(first, second) {
 async function createDriveFolderIfNotExists() {
   try {
     await access(localDrivePath, constants.R_OK | constants.W_OK);
-    console.log('Can access folder', localDrivePath);
   } catch (err) {
     const pathDoesNotExist = err.code === 'ENOENT';
     if (pathDoesNotExist) {
