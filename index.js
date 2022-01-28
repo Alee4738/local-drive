@@ -1,7 +1,7 @@
 const express = require('express');
 const { networkInterfaces } = require('os');
 const path = require('path');
-const { access, readdir, writeFile, mkdir } = require('fs/promises');
+const { access, readdir, writeFile, mkdir, unlink } = require('fs/promises');
 const { constants } = require('fs');
 const app = express();
 const port = 3000;
@@ -67,6 +67,18 @@ app.put(`${localDriveVirtualPath}/:name`, async (req, res) => {
   const filePath = path.normalize(path.join(localDrivePath, fileName));
   try {
     await writeFile(filePath, req.body);
+    res.end();
+  } catch (err) {
+    console.error(err);
+    res.send(400);
+  }
+});
+
+app.delete(`${localDriveVirtualPath}/:name`, async (req, res) => {
+  const fileName = path.normalize(`/${req.params.name}`);
+  const filePath = path.normalize(path.join(localDrivePath, fileName));
+  try {
+    await unlink(filePath);
     res.end();
   } catch (err) {
     console.error(err);

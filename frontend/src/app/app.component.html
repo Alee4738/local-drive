@@ -1,14 +1,27 @@
 <h1>Local Drive</h1>
-<input #fileUploadInput type="file" multiple />
+<input
+  type="file"
+  multiple
+  (change)="uploadFiles($event)"
+  [(ngModel)]="filesToUpload"
+/>
+
 <br />
-<button (click)="uploadFiles()">Upload files</button>
+{{ statusMessage }}
+<br />
 
 <ul>
   <li *ngFor="let file of displayFiles">
     <label [for]="file">
       <a [href]="fileApiSegment + '/' + file" [download]="file" [name]="file">{{
         file
-      }}</a>
+      }}</a
+      >&nbsp;&nbsp;&nbsp;<a
+        href="#"
+        class="delete-btn"
+        (click)="deleteFile(file)"
+        >X</a
+      >
     </label>
   </li>
 </ul>

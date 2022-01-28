@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,34 +9,32 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   displayFiles: string[] = [];
-  // TODO: what type is returned? Not sure
-  @ViewChild('fileUploadInput')
-  fileUploadInput!: { nativeElement: HTMLInputElement };
-
   fileApiSegment = '/file';
+  filesToUpload: any;
+  statusMessage: string = '';
 
-  constructor(public http: HttpClient) {
-    // @ts-ignore
-    this.modernizr = (window as unknown).Modernizr;
-  }
+  constructor(public http: HttpClient) {}
 
   ngOnInit() {
-    this.loadFiles();
+    this.reloadFiles();
   }
 
-  loadFiles() {
+  reloadFiles() {
     this.http.get(this.fileApiSegment).subscribe((val: Object) => {
       this.displayFiles = val as string[];
     });
   }
 
-  async uploadFiles() {
-    const files: FileList | null = this.fileUploadInput.nativeElement.files;
+  async uploadFiles(event: Event) {
+    const inputElt = event.target as HTMLInputElement;
+    const files: FileList | null = inputElt.files;
     if (!files || files.length === 0) {
       console.log('No files to upload');
       return;
     }
 
+    const uploads = [];
+    this.statusMessage = 'Uploading...';
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
       console.log(file);
@@ -43,13 +42,25 @@ export class AppComponent implements OnInit {
       const httpHeaders = new HttpHeaders({
         'Content-Type': 'text/plain',
       });
-      this.http
-        .put(`${this.fileApiSegment}/${file?.name}`, fileArrayBuffer, {
+      uploads.push(
+        this.http.put(`${this.fileApiSegment}/${file?.name}`, fileArrayBuffer, {
           headers: httpHeaders,
         })
-        .subscribe(() => {
-          this.loadFiles();
-        });
+      );
     }
+    forkJoin(uploads).subscribe(() => {
+      this.statusMessage = '';
+      this.filesToUpload = undefined;
+      this.reloadFiles();
+    });
+  }
+
+  deleteFile(file: string) {
+    this.statusMessage = 'Deleting...';
+    this.http.delete(`${this.fileApiSegment}/${file}`).subscribe(() => {
+      console.log(`Deleted ${file}`);
+      this.statusMessage = '';
+      this.reloadFiles();
+    });
   }
 }
