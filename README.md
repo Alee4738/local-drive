@@ -53,14 +53,11 @@ node index.js
 # Features
 
 - Client can access server using a web browser and IP address and port
-- Client can upload files to server
-- Client can download files from server
-- There is a root folder with files
+- Client can upload, download, and delete files
 
 # Limitations
 
 - No nested folders allowed
-- Can't delete files
 - Can't rename files
 - Can't search for files easily (but you can use Ctrl+F)
 - Running the project currently requires downloading this repository. Other options:
