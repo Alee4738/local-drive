@@ -6,6 +6,7 @@ const { constants } = require('fs');
 const app = express();
 const port = 3000;
 
+// Create virtual paths to prevent exposing actual file path in requests.
 const localDrivePath = path.resolve(__dirname, 'files');
 const localDriveVirtualPath = '/file';
 
