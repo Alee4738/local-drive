@@ -1,7 +1,7 @@
 const express = require('express');
 const { networkInterfaces } = require('os');
 const path = require('path');
-const { access, readdir, writeFile, mkdir, unlink } = require('fs/promises');
+const { access, readdir, writeFile, mkdir, unlink } = require('fs').promises;
 const { constants } = require('fs');
 const app = express();
 const port = 3000;

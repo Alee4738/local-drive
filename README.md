@@ -50,6 +50,8 @@ node index.js
 
 ## Todo
 
+- Be able to load large and/or multiple files.
+
 # Features
 
 - Client can access server using a web browser and IP address and port
